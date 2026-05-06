@@ -19,7 +19,8 @@ const LeadForm = () => {
         leadSource: "LinkedIn",
         assignedTo: "",
         dealValue: "",
-        status: "New"
+        status: "New",
+        nextFollowUp: ""
     });
 
     useEffect(() => {
@@ -41,7 +42,8 @@ const LeadForm = () => {
                     leadSource: lead.leadSource,
                     assignedTo: lead.assignedTo,
                     dealValue: lead.dealValue,
-                    status: lead.status
+                    status: lead.status,
+                    nextFollowUp: lead.nextFollowUp ? new Date(lead.nextFollowUp).toISOString().split('T')[0] : ""
                 });
             } else {
                 toast.error(response.data.message);
@@ -222,6 +224,16 @@ const LeadForm = () => {
                                     className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
                                     placeholder="5000"
                                     required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-slate-700">Next Follow-up Date</label>
+                                <input 
+                                    type="date" 
+                                    name="nextFollowUp"
+                                    value={formData.nextFollowUp}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
                                 />
                             </div>
                             {leadId && (

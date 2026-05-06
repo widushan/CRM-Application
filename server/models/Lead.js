@@ -18,6 +18,8 @@ const leadSchema = new mongoose.Schema({
         default: "New"
     },
     dealValue: { type: Number, required: true, default: 0 },
+    userId: { type: String, required: true },
+    nextFollowUp: { type: Date },
     notes: [{ type: mongoose.Schema.Types.ObjectId, ref: "note" }],
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }

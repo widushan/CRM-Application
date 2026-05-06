@@ -4,7 +4,7 @@ import noteModel from "../models/Note.js";
 // Add Lead
 const addLead = async (req, res) => {
     try {
-        const { leadName, companyName, email, phone, leadSource, assignedTo, dealValue } = req.body;
+        const { leadName, companyName, email, phone, leadSource, assignedTo, dealValue, nextFollowUp } = req.body;
 
         const newLead = new leadModel({
             leadName,
@@ -13,7 +13,9 @@ const addLead = async (req, res) => {
             phone,
             leadSource,
             assignedTo,
-            dealValue
+            dealValue,
+            nextFollowUp,
+            userId: req.userId
         });
 
         await newLead.save();
@@ -28,7 +30,7 @@ const addLead = async (req, res) => {
 // List Leads
 const listLeads = async (req, res) => {
     try {
-        const leads = await leadModel.find({}).sort({ createdAt: -1 });
+        const leads = await leadModel.find({ userId: req.userId }).sort({ createdAt: -1 });
         res.json({ success: true, leads });
     } catch (error) {
         console.log(error);
@@ -40,7 +42,7 @@ const listLeads = async (req, res) => {
 const getLeadDetail = async (req, res) => {
     try {
         const { leadId } = req.params;
-        const lead = await leadModel.findById(leadId).populate("notes");
+        const lead = await leadModel.findOne({ _id: leadId, userId: req.userId }).populate("notes");
         
         if (!lead) {
             return res.json({ success: false, message: "Lead not found" });
@@ -56,9 +58,10 @@ const getLeadDetail = async (req, res) => {
 // Update Lead Status/Detail
 const updateLead = async (req, res) => {
     try {
-        const { leadId, leadName, companyName, email, phone, leadSource, assignedTo, status, dealValue } = req.body;
+        const { leadId, leadName, companyName, email, phone, leadSource, assignedTo, status, dealValue, nextFollowUp } = req.body;
+        const userId = req.userId;
         
-        await leadModel.findByIdAndUpdate(leadId, {
+        await leadModel.findOneAndUpdate({ _id: leadId, userId }, {
             leadName,
             companyName,
             email,
@@ -66,7 +69,8 @@ const updateLead = async (req, res) => {
             leadSource,
             assignedTo,
             status,
-            dealValue
+            dealValue,
+            nextFollowUp
         });
 
         res.json({ success: true, message: "Lead Updated Successfully" });
@@ -80,11 +84,12 @@ const updateLead = async (req, res) => {
 const deleteLead = async (req, res) => {
     try {
         const { leadId } = req.body;
+        const userId = req.userId;
         
         // Delete associated notes first
         await noteModel.deleteMany({ leadId });
         
-        await leadModel.findByIdAndDelete(leadId);
+        await leadModel.findOneAndDelete({ _id: leadId, userId });
         res.json({ success: true, message: "Lead Deleted Successfully" });
     } catch (error) {
         console.log(error);

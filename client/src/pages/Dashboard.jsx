@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { TrendingUp, Users, DollarSign, CheckCircle, ArrowUpRight, ArrowRight, BarChart3 } from "lucide-react";
+import { TrendingUp, Users, DollarSign, CheckCircle, ArrowUpRight, ArrowRight, BarChart3, PlusCircle, Calendar } from "lucide-react";
 
 const Dashboard = () => {
     const [stats, setStats] = useState(null);
@@ -139,25 +139,59 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                {/* Recent Activity or Quick Actions */}
-                <div className="bg-indigo-600 rounded-2xl shadow-xl p-8 text-white flex flex-col justify-between">
-                    <div>
-                        <h3 className="text-2xl font-bold mb-4">Pipeline Tip</h3>
-                        <p className="text-indigo-100 leading-relaxed">
-                            Following up within 24 hours of first contact increases your conversion chance by 60%. Make sure to update your "Contacted" leads today!
-                        </p>
-                    </div>
-                    <div className="mt-8">
-                        <div className="p-4 bg-indigo-500 rounded-xl bg-opacity-30 border border-indigo-400">
-                            <p className="text-sm font-semibold mb-1">Target for Q2</p>
-                            <div className="flex justify-between items-end mb-2">
-                                <span className="text-2xl font-bold">LKR 50,000</span>
-                                <span className="text-xs text-indigo-200">70% reached</span>
-                            </div>
-                            <div className="h-2 bg-indigo-700 rounded-full overflow-hidden">
-                                <div className="h-full bg-white rounded-full" style={{ width: '70%' }} />
-                            </div>
+                {/* Upcoming Tasks / Follow-ups */}
+                <div className="space-y-6 flex flex-col justify-between">
+                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex-1">
+                        <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                            <Calendar className="w-6 h-6 text-indigo-600" />
+                            Upcoming Follow-ups
+                        </h3>
+                        <div className="space-y-4">
+                            {stats.upcomingFollowUps && stats.upcomingFollowUps.length > 0 ? (
+                                stats.upcomingFollowUps.map((lead) => (
+                                    <Link 
+                                        key={lead._id} 
+                                        to={`/leads/${lead._id}`}
+                                        className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-indigo-200 hover:bg-white transition-all group"
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                                                {lead.leadName.charAt(0)}
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-bold text-slate-800">{lead.leadName}</p>
+                                                <p className="text-xs text-slate-500">{lead.companyName}</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-xs font-bold text-indigo-600">
+                                                {new Date(lead.nextFollowUp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                                            </p>
+                                            <p className="text-[10px] text-slate-400">Scheduled</p>
+                                        </div>
+                                    </Link>
+                                ))
+                            ) : (
+                                <div className="text-center py-12">
+                                    <div className="p-4 bg-slate-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                                        <CheckCircle className="w-8 h-8 text-slate-300" />
+                                    </div>
+                                    <p className="text-slate-400 italic text-sm">All caught up! No follow-ups scheduled.</p>
+                                    <Link to="/leads" className="text-indigo-600 text-xs font-bold hover:underline mt-2 inline-block">Schedule one now</Link>
+                                </div>
+                            )}
                         </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <Link to="/leads/add" className="flex flex-col items-center justify-center p-4 bg-indigo-600 text-white rounded-2xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 group">
+                            <PlusCircle className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform" />
+                            <span className="text-xs font-bold">Add Lead</span>
+                        </Link>
+                        <Link to="/leads" className="flex flex-col items-center justify-center p-4 bg-white border border-slate-200 text-slate-700 rounded-2xl hover:bg-slate-50 transition-all group">
+                            <Users className="w-6 h-6 mb-2 group-hover:scale-110 transition-transform text-slate-400 group-hover:text-indigo-600" />
+                            <span className="text-xs font-bold">All Leads</span>
+                        </Link>
                     </div>
                 </div>
             </div>
