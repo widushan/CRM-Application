@@ -9,6 +9,11 @@ A full-stack Customer Relationship Management (CRM) application designed to stre
 
 ---
 
+### Demo Video
+https://drive.google.com/file/d/1XDO0ubq5bZTY6u_FCOGdumV_RYvzVQMp/view?usp=sharing
+
+---
+
 ## 🛠️ Tech Stack
 
 ### Frontend
