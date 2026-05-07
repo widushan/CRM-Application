@@ -69,6 +69,29 @@ npm run dev
 
 ---
 
+## 🌐 Deploy on vercel
+
+https://crm-application-g1rz.vercel.app
+
+---
+### /Dashboard
+<img width="1913" height="988" alt="Image" src="https://github.com/user-attachments/assets/845489cb-de7e-41fb-99c7-a5083ab5fe4a" />
+
+
+### /Leads
+<img width="1911" height="995" alt="Image" src="https://github.com/user-attachments/assets/2978bf0a-8302-4d9f-bcb8-be7c3701f4be" />
+
+
+### /Add-Lead
+<img width="1906" height="988" alt="Image" src="https://github.com/user-attachments/assets/11b018ea-de52-4342-8616-47f0f718f2c7" />
+
+
+### Edit/Lead
+<img width="1897" height="990" alt="Image" src="https://github.com/user-attachments/assets/0fbe254c-332d-4587-bc3d-3ced71325772" />
+
+---
+
+
 ## 🔑 Environment Variables
 
 ### Server (`/server/.env`)
